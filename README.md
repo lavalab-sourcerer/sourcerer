@@ -1,7 +1,14 @@
-# Sourcerer
+# Sourcerer 🪄
 
-Sourcerer is a Chrome extension + web application that uses natural language processing to magically summarize and organize text sources so you don't have to.
-- Currently: `IN DEVELOPMENT`
+[Sourcerer](https://docs.google.com/presentation/d/1AofOfrdOc47wkUwydh0laurRl1mQ0x-AlHi2gXn7BmI/edit?usp=sharing) is a research tool that uses Natural Language Processing to <em>magically</em> summarize and organize text sources to simplify the research process. Sourcerer was built by Team Sourcerer in the Fall 2021 cohort of LavaLab, the University of Southern California’s premiere, student-run product incubator. Learn more about LavaLab [here](https://usclavalab.org/).
+
+## Team Sorcerer
+* Quentin Curry - Product Manager
+* Heath Chancey - Designer
+* Amber Garcha - Developer
+* Woody Shin - Developer
+
+
 
 ## Available Scripts
 

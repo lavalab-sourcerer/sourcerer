@@ -7,7 +7,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-// import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,30 +25,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { Chip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 
-function createData(name, lastEdited, numSources, keywords) {
+function createData(name, dateAdded, author, keywords) {
   let keywordList = keywords.split(', ');
   let items = [];
 
   for (const [index, value] of keywordList.entries()) {
     items.push(<Chip key={index} sx={{ backgroundColor: '#C7E1F6', border: 'none', color: '#124E9E', borderRadius: '3px', marginRight: 1, height: "22px", textTransform: "uppercase", px: 0 }} label={value} variant="outlined" size="small"></Chip>)
-  }
+  } 
 
   return {
     name,
-    lastEdited,
-    numSources,
+    dateAdded,
+    author,
     items,
   };
 }
 
 const rows = [
-  createData('🪴 Photosynthesis of leaf canopies', '11/19/21', 6, 'Plante, Leaf, Carbon'),
-  createData('🐶 Golden Retrievers', '10/4/21', 19, 'Frisbee, Treats, Dogs'),
-  createData('🌐 Iranian Global Affairs', '8/5/21', 10, 'Government, Diplomacy'),
-  createData('🎅🏻 Santa Claus', '6/2/21', 32, 'Chimney, Holiday, Christmas'),
-  createData('🍲 Italian Cuisine', '3/27/21', 15, 'Pasta, Cannolis, Pizza'),
+  createData("Canopy reflectance and transpiration", "11/19/21", "P.J. Sellers", "Stomatal, Photosynthetic"),
+  createData("Ecophysiology of leaf photosynthesis", "9/15/21", "K. Hikosaka", "Ecophysiology, Leaf"),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -76,16 +73,16 @@ const headCells = [
     label: 'Name',
   },
   {
-    id: 'lastEdited',
+    id: 'dateAdded',
     numeric: false,
     disablePadding: false,
-    label: 'Last Edited',
+    label: 'Date Added',
   },
   {
-    id: 'numSources',
-    numeric: true,
+    id: 'author',
+    numeric: false,
     disablePadding: false,
-    label: '# Sources',
+    label: 'Author',
   },
   {
     id: 'keywords',
@@ -103,9 +100,9 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead sx={{backgroundColor: "white"}}>
+    <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell padding="checkbox" sx={{ backgroundColor: 'white'}}>
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -165,18 +162,13 @@ const EnhancedTableToolbar = (props) => {
     setOpen(false);
   };
 
-  const createProject = (name) => {
-    console.log(name);  
-    setOpen(false);
-    createData(name, '12/2/21', 0, '');
-  };
-
   return (
     <Toolbar
       variant="dense"
       sx={{
         pl: { sm: 0 },
         pr: { xs: 0, sm: 0 },
+        minHeight: 0,
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -193,7 +185,7 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography id="tableTitle" component="div" variant="h5" sx={{ fontFamily: 'niveau-grotesk', flex: '1 1 100%', mb: 1}}>My Projects</Typography>
+        <Typography id="tableTitle" component="div" variant="h5" sx={{ fontFamily: 'niveau-grotesk', flex: '1 1 100%', mb: 1}}>Sources</Typography>
       )}
 
       {numSelected > 0 ? (
@@ -205,30 +197,56 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <>
         <Button startIcon={<AddIcon />} size="small" variant="outlined" sx={{  mb: 1, mr: 1, minWidth: "max-content"}} onClick={handleClickOpen}>
-          New Project
+          Import Source
         </Button>
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{mb: 0}}>New Project</DialogTitle>
-        <DialogContent>
-          <TextField
-            size="small"
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Project Name"
-            type="text"
-            fullWidth
-            variant="outlined"
-            sx={{width: "300px"}}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={createProject}>Create</Button>
-        </DialogActions>
-      </Dialog>
+        {/* <Button size="small" variant="outlined" sx={{ mb: 1, minWidth: "max-content"}} onClick={handleClickOpen}>
+          Export Selected
+        </Button> */}
+        <Dialog open={open} onClose={handleClose} maxWidth="600px">
+                                <DialogTitle sx={{display: "flex"}}>
+                                    Import Source
+                                    <IconButton aria-label="close" onClick={handleClose} sx={{marginLeft: "auto", width: 32, height: 32}}>
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                </DialogTitle>
+                                <DialogContent>
+                                {/* <DialogContentText>
+                                    To subscribe to this website, please enter your email address here. We
+                                    will send updates occasionally.
+                                </DialogContentText> */}
+                                <Button size="small" variant="outlined" sx={{  mb: 1, mr: 1, minWidth: "max-content"}} onClick={handleClickOpen}>
+          Upload File
+        </Button><Button size="small" variant="outlined" sx={{  mb: 1, mr: 1, minWidth: "max-content"}} onClick={handleClickOpen}>
+          Paste URL
+        </Button>
+                                    <TextField
+                                        size="small"
+                                        margin="dense"
+                                        id="name"
+                                        label="Source Title"
+                                        type="text"
+                                        fullWidth
+                                        variant="outlined"
+                                        inputProps={{autocomplete: "off"}}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        margin="dense"
+                                        id="authro"
+                                        label="Source Author"
+                                        type="text"
+                                        fullWidth
+                                        variant="outlined"
+                                        inputProps={{autocomplete: "off"}}
+                                    />
+                                    
+                                </DialogContent>
+                                <DialogActions sx={{mr: 1, mb: 1, mt: 3}}>
+                                    <Button onClick={handleClose} variant="contained">Import Source</Button>
+                                </DialogActions>
+                            </Dialog>
         <Tooltip title="Filter list">
-          <IconButton sx={{ py:0, mb: 1 }}>
+          <IconButton sx={{ py:0, mb: 1}}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -318,8 +336,6 @@ export default function EnhancedTable() {
 
                   return (
                     <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -328,6 +344,7 @@ export default function EnhancedTable() {
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
+                          onClick={(event) => handleClick(event, row.name)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -340,11 +357,15 @@ export default function EnhancedTable() {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href='/source';}}
+                        sx={{ cursor: "pointer" }}
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="left" sx={{ py: 1.5}}>{row.lastEdited}</TableCell>
-                      <TableCell align="center" sx={{ py: 1.5}}>{row.numSources}</TableCell>
+                      <TableCell align="left" sx={{ py: 1.5}}>{row.dateAdded}</TableCell>
+                      <TableCell align="left" sx={{ py: 1.5}}>{row.author}</TableCell>
                       <TableCell align="left" sx={{ py: 1.5}}>{row.items}</TableCell>
                     </TableRow>
                   );
@@ -365,8 +386,8 @@ export default function EnhancedTable() {
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
-          // rowsPerPage={rowsPerPage}
-          // page={page}
+          rowsPerPage={rowsPerPage}
+          page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         /> */}
